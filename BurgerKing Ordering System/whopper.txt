@@ -1,0 +1,3 @@
+1 Whopper, 18.00 22.50 24.50
+2 Whopper with Cheese, 21.00 25.50 27.50
+3 Whopper Jr, 11.50 13.90 18.00

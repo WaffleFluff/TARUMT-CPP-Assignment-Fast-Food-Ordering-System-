@@ -1,0 +1,5 @@
+1 Taro Pie, 4.90
+2 Pineapple Pie, 4.90
+3 Apple Pie, 4.90
+4 Banana Pie, 4.90
+5 Hershey's Sundae Pie, 8.90

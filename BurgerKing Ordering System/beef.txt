@@ -1,0 +1,7 @@
+1 Single BBQ Beefacon, 13.90 18.40 20.41
+2 Double BBQ Beefacon, 18.40 22.90 24.90
+3 Mushroom Swiss Single, 13.90 18.40 20.41
+4 Mushroom Swiss Double, 18.40 22.90 24.90
+5 Cheeseburger, 10.90 15.40 17.41
+6 Double Cheeseburger, 15.40 19.90 21.90
+7 Long Cheesy Onion Beef, 17.00 21.50 23.50

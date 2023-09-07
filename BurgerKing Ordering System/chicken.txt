@@ -1,0 +1,5 @@
+1 French Chicken, 17.41 21.90 23.90
+2 Chick'n Crisp, 9.90 14.39 16.40
+3 Tendercrisp, 16.00 20.50 22.50
+4 Long Chicken, 12.90 17.41 19.40
+5 Tendergrill, 15.00 19.50 21.50

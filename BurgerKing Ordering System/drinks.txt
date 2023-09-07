@@ -1,0 +1,10 @@
+1 Soft Drinks, 4.51	
+2 Mineral Water, 4.51
+3 Hot Tea, 4.51
+4 Hot Teh Tarik, 5.50
+5 Iced Teh Tarik, 6.90
+6 Hot Latte, 7.90
+7 Hot Americano, 6.50
+8 Hot Cappuccino, 7.50
+9 Iced Latte, 9.50
+10 Iced Americano, 7.50

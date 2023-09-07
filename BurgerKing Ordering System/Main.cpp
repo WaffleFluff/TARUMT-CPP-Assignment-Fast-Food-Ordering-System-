@@ -322,6 +322,7 @@ void login(vector<Customer>& customers)
 	cout << "Enter Member ID: ";
 	cin.ignore();
 	getline(cin, MemberID);
+	transform(MemberID.begin(), MemberID.end(), MemberID.begin(), ::toupper);
 
 	ifstream inFile("customer_data.txt");
 	if (inFile.is_open())
@@ -1453,7 +1454,7 @@ void payment(int dine) {
 	// Step 3: Prompt staff to enter a valid card number
 	do {
 		cout << "Enter the card number: ";
-		cin >> memberidInput;
+		getline(cin, memberidInput);
 		transform(memberidInput.begin(), memberidInput.end(), memberidInput.begin(), ::toupper);// convert lower case to upper case
 
 		linecounter = 0;//reset counter

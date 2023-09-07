@@ -44,7 +44,6 @@ bool validateName(const string& name);
 bool validateContact(const string& contact);
 bool validateAge(const string& ageString);
 void writeToFile(const Customer& customer);
-void payment(int dine);
 
 /*                      Menu Module                  */
 void MENU();
@@ -55,6 +54,11 @@ void PREMIUM_MENU();
 void DRINKS_MENU();
 void DESSERT_MENU();
 void SIDES_MENU();
+/*Payment and Member Point module*/
+void payment(int dine);
+double memberpointadd(double subtotal, double memberpoint);
+double memberpointsub1(double subtotal, double convertmemberpoint);
+double memberpointsub2(double subtotal, double* convert, double topupvalue);
 
 int main() {
 
@@ -1405,9 +1409,7 @@ void payment(int dine) {
 		double memberPoints = 0.0;
 
 	};
-	double memberpointadd(double subtotal, double memberpoint);
-	double memberpointsub1(double subtotal, double convertmemberpoint);
-	double memberpointsub2(double subtotal, double* convert, double topupvalue);
+	
 	//declare variable
 	int payDecicion = 5, topupDecision = 0, linecounter = 0, i = 0;
 	double total = 0, itemsPrice = 0.0, serviceCharge = 0.0, subtotal = 0.0, convertMemberPoint = 0.0;
@@ -1417,7 +1419,11 @@ void payment(int dine) {
 	vector<string>lines;
 	Members members;
 
-
+#ifdef _WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
 
 
 	cout << "===========================================================" << endl;
@@ -1610,6 +1616,10 @@ void payment(int dine) {
 				}
 			}temp.close();
 
+			cout << "Press anykey to return main menu -->";
+			cin.ignore();
+			cin.get();
+			home();
 		}
 		else if (payDecicion == 1) {
 			//when member point is sufficient
@@ -1648,10 +1658,17 @@ void payment(int dine) {
 						temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl;
 				}
 			}temp.close();
+			cout << "Press anykey to return main menu -->";
+			cin.ignore();
+			cin.get();
+			home();
 
 		}
 		else if (payDecicion == 2) {
-			cout << "Thank You";
+			cout << "Thank You" << endl;
+			cout << "Press anykey to return main menu -->";
+			cin.ignore();
+			cin.get();
 			home();
 		}
 	}
@@ -1668,14 +1685,17 @@ void payment(int dine) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please Enter a Valid Number" << endl;
+				cout << "Press anykey to return main menu -->" << endl;
 				continue;
 			}
 			else if (topupDecision == 1) {
 				cout << "Proceed to top up module";
 			}
 			else if (topupDecision == 2) {
-				cout << "Thank You";
+				cout << "Thank You" << endl;
+				cout << "Press anykey to return main menu -->";
+				cin.ignore();
+				cin.get();
 				home();
 			}
 			else {

@@ -45,6 +45,7 @@ bool validateContact(const string& contact);
 bool validateAge(const string& ageString);
 void writeToFile(const Customer& customer);
 
+
 /*                      Menu Module                  */
 void MENU();
 void BREAKFAST_MENU();

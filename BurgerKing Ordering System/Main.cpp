@@ -567,6 +567,7 @@ void MENU() {
 		else
 			continue;
 	} while (categoryChoice != 9 || checkoutChoice != 9);
+	cin.get();
 	payment(diningMethod);
 }
 
@@ -1461,7 +1462,7 @@ void payment(int dine) {
 		linecounter = 0;//reset counter
 		idFile.open("customer_data.txt", ios::in);
 		if (idFile.fail()) {
-			cout << "Error Reading File" << endl;// if file cannot open print Error Reading File and close the program
+			cout << "Error Reading File" << endl;// if file cannot open print Error Reading File
 		}
 		else if (!idFile.eof()) {
 			while (getline(idFile, line)) {
@@ -1618,7 +1619,7 @@ void payment(int dine) {
 				}
 			}temp.close();
 
-			cout << "Press anykey to return main menu -->";
+			cout << "Press any key to return main menu -->";
 			cin.ignore();
 			cin.get();
 			home();
@@ -1660,7 +1661,7 @@ void payment(int dine) {
 						temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl;
 				}
 			}temp.close();
-			cout << "Press anykey to return main menu -->";
+			cout << "Press any key to return main menu -->";
 			cin.ignore();
 			cin.get();
 			home();
@@ -1668,7 +1669,7 @@ void payment(int dine) {
 		}
 		else if (payDecicion == 2) {
 			cout << "Thank You" << endl;
-			cout << "Press anykey to return main menu -->";
+			cout << "Press any key to return main menu -->";
 			cin.ignore();
 			cin.get();
 			home();
@@ -1687,7 +1688,7 @@ void payment(int dine) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Press anykey to return main menu -->" << endl;
+				cout << "Invalid Input" << endl;
 				continue;
 			}
 			else if (topupDecision == 1) {
@@ -1695,7 +1696,7 @@ void payment(int dine) {
 			}
 			else if (topupDecision == 2) {
 				cout << "Thank You" << endl;
-				cout << "Press anykey to return main menu -->";
+				cout << "Press any key to return main menu -->";
 				cin.ignore();
 				cin.get();
 				home();

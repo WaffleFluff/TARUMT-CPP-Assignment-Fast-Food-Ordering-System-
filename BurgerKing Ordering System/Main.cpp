@@ -1688,7 +1688,7 @@ void payment(int dine) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Invalid Input" << endl;
+				cout << "Invalid Selection" << endl;
 				continue;
 			}
 			else if (topupDecision == 1) {
@@ -1702,7 +1702,7 @@ void payment(int dine) {
 				home();
 			}
 			else {
-				cout << "Invalid Input" << endl;;
+				cout << "Invalid Selection" << endl;;
 			}
 		} while (topupDecision != 1 && topupDecision != 2);
 

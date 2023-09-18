@@ -32,7 +32,7 @@ struct menu { //store data from menu display files
 	double alaCarte = 0.0, setMeal = 0.0, medium = 0.0, large = 0.0, price = 0.0;
 };
 vector<menu> orderList;
-/****************************************************/
+/***********************************************************************************/
 
 /*                FUNCTION PROTOTYPES               */
 /*                Login/Register Module             */
@@ -45,8 +45,10 @@ bool validateContact(const string& contact);
 bool validateAge(const string& ageString);
 void writeToFile(const Customer& customer);
 
+/*						 Top up Module                  */
+void topup();
 
-/*                      Menu Module                  */
+/*					     Menu Module				       */
 void MENU();
 void BREAKFAST_MENU();
 void CHICKEN_MENU();
@@ -55,11 +57,18 @@ void PREMIUM_MENU();
 void DRINKS_MENU();
 void DESSERT_MENU();
 void SIDES_MENU();
+
 /*Payment and Member Point module*/
+/*                  Payment & Member Point Module                */
 void payment(int dine);
 double memberpointadd(double subtotal, double memberpoint);
 double memberpointsub1(double subtotal, double convertmemberpoint);
 double memberpointsub2(double subtotal, double* convert, double topupvalue);
+
+/*                     Exit Program Module                  */
+void exitProgram();
+/***********************************************************************************/
+
 
 int main() {
 
@@ -68,6 +77,7 @@ int main() {
 	return 0;
 }
 
+/***********************************************************************************/
 /*                REGISRATION MODULE USER-DECLARED FUNCTIONS               */
 //homepage 
 void home() {
@@ -78,11 +88,6 @@ void home() {
 
 	do
 	{
-#ifdef _WIN32
-		system("cls");
-#else
-		system("clear");
-#endif
 
 		logo();
 		cout << "Your Choice Here: ";
@@ -108,16 +113,22 @@ void home() {
 			login(customers);
 			break;
 		}
-
+		
 		case 3:
 		{
-			MENU();
+			topup(); 
 			break;
 		}
 
 		case 4:
 		{
-			cout << "Thank you, Goodbye!" << endl;
+			MENU();
+			break;
+		}
+
+		case 5:
+		{
+			exitProgram();
 			break;
 		}
 
@@ -126,10 +137,11 @@ void home() {
 		}
 
 		cout << "\nPress Enter to continue...";
+		cin.ignore();
 		cin.get();
 
 
-	} while (choice != 3);
+	} while (choice != 5);
 }
 
 //function display logo
@@ -156,14 +168,15 @@ void logo()
 	cout << "|*| How Can I Help You? \n\n";
 	cout << "       1.Register - Make a new Account\n";
 	cout << "       2.Check Member Account info\n";
-	cout << "       3.Menu\n";
-	cout << "       4.Exit\n\n";
+	cout << "       3.Top Up Member Card\n";
+	cout << "       4.Menu\n";
+	cout << "       5.Exit\n\n";
 	cout << " ************************************************* \n";
 	cout << " ************************************************* \n";
 
 }
 
-
+/*                    REGISTER MODULE USER-DECLARED FUNCTIONS                  */
 // Function to validate the customer name
 bool validateName(const string& name)
 {
@@ -226,7 +239,7 @@ void writeToFile(const Customer& customer)
 	if (outFile.is_open())
 	{
 
-		outFile << customer.memberID << "," << customer.name << "," << customer.contact << "," << customer.age << " " << fixed << setprecision(2) << customer.balance << " " << customer.memberPoint << endl;
+		outFile << customer.memberID << "," << customer.name << "," << customer.contact << "," << customer.age << "," << fixed << setprecision(2) << customer.balance << "," << customer.memberPoint << endl;
 		outFile.close();
 	}
 	else
@@ -319,59 +332,340 @@ void registerNewCustomer(vector<Customer>& customers)
 void login(vector<Customer>& customers)
 {
 	string MemberID;
+	Customer customer; //create a customer object to store data
+	ifstream inFile;
+	string templine;
+	int lcter = 0;
 	cout << "====================LOGIN====================\n\n";
-	cout << "Enter Member ID: ";
-	cin.ignore();
-	getline(cin, MemberID);
-	transform(MemberID.begin(), MemberID.end(), MemberID.begin(), ::toupper);
+	
+	do {
+		cout << "Enter Member ID: ";
+		cin >>MemberID;
+		transform(MemberID.begin(), MemberID.end(), MemberID.begin(), ::toupper);
 
-	ifstream inFile("customer_data.txt");
-	if (inFile.is_open())
-	{
-		string line;
-		bool found = false;
-
-		while (getline(inFile, line))
-		{
-			istringstream iss(line);
-			Customer customer; //create a customer object to store data
-
-			getline(iss, customer.memberID, ',');
-			getline(iss, customer.name, ',');
-			getline(iss, customer.contact, ',');
-			iss >> customer.age;
-			iss >> customer.balance;
-			iss >> customer.memberPoint;
-
-			if (MemberID == customer.memberID)
-			{
-				found = true;
-				cout << "--------------------------------------------" << endl;
-				cout << setw(27) << "Customer Info" << endl;
-				cout << "Name          : " << customer.name << endl;
-				cout << "MemberID      : " << customer.memberID << endl;
-				cout << "Balance       : " << fixed << setprecision(2) << customer.balance << endl;
-				cout << "Member Point  : " << fixed << setprecision(2) << customer.memberPoint << endl;
-				cout << "Member Age    : " << customer.age << endl;
-				cout << "Member Contact: " << customer.contact << endl;
-				cout << "--------------------------------------------" << endl;
-				break;
+		lcter = 0;
+		inFile.open("customer_data.txt", ios::in);
+		if (inFile.fail()) {
+			cout << "Error Reading File" << endl;// if file cannot open print Error Reading File and close the program
+		}
+		else if (!inFile.eof()) {
+			while (getline(inFile, templine)) {
+				lcter++;
+				istringstream iss(templine); // store line in iss
+				getline(iss, customer.memberID, ',');
+				getline(iss, customer.name, ',');
+				getline(iss, customer.contact, ',');
+				iss >> customer.age;
+				iss >> customer.balance;
+				iss >> customer.memberPoint;
+				iss.ignore();//ignore the buffer
+				//print customer info
+				if (MemberID == customer.memberID) {
+					cout << "--------------------------------------------" << endl;
+					cout << setw(27) << "Customer Info" << endl;
+					cout << "Name          : " << customer.name << endl;
+					cout << "MemberID      : " << customer.memberID << endl;
+					cout << "Balance       : " << fixed << setprecision(2) << customer.balance << endl;
+					cout << "Member Point  : " << fixed << setprecision(2) << customer.memberPoint << endl;
+					cout << "Member Age    : " << customer.age << endl;
+					cout << "Member Contact: " << customer.contact << endl;
+					cout << "--------------------------------------------" << endl;
+					break;
+				}
+			}
+			inFile.close();
+			if (MemberID != customer.memberID) { //if the id is not at file then will print Enter a valid member id 
+				cout << "Enter a valid member id" << endl;
 			}
 		}
-
-		if (!found)
-		{
-			cout << "Member not found." << endl;
-		}
-
-		inFile.close();
-	}
-	else
-	{
-		cout << "Unable to open file for reading." << endl;
-	}
+	} while (MemberID != customer.memberID);
 }
 
+/*                    TOPUP MODULE USER-DECLARED FUNCTIONS                   */
+struct TOPUP {
+	int option = 0;
+	double amount = 0.0;
+};
+
+struct Members {
+	string memberids;
+	string names;
+	string contact;
+	int age = 0;
+	double topupvalue = 0.0;
+	double memberPoints = 0.0;
+};
+
+void topup()
+{
+	void TOP_UP_MENU();
+	double addbalance(int option);
+	//declare variable
+	string memberidInput = " ", line = " ", card_num = " ", card_pin = " ";
+	vector<string>lines;
+	int topup_option = 0, linecounter = 0;
+	double topup_total = 0.0, add_balance = 0.0;
+	char cont = '0';
+	fstream idFile;
+	ofstream temp;
+	Members members;
+
+	do {
+		cout << "===========================================================" << endl;
+		cout << "                         TOP UP                           " << endl;
+		cout << "===========================================================" << endl;
+
+
+		do {
+			cout << "Enter the card number: ";
+			cin >> memberidInput;
+			transform(memberidInput.begin(), memberidInput.end(), memberidInput.begin(), ::toupper);// convert lower case to upper case
+
+			linecounter = 0;//reset counter
+			idFile.open("customer_data.txt", ios::in);
+			if (idFile.fail()) {
+				cout << "Error Reading File" << endl;// if file cannot open print Error Reading File and close the program
+			}
+			else if (!idFile.eof()) {
+				while (getline(idFile, line)) {
+					linecounter++; //counter for the line number or customer info
+					istringstream iss(line); // store line in iss
+					getline(iss, members.memberids, ',');
+					getline(iss, members.names, ',');  // Read name until comma
+					getline(iss, members.contact, ',');
+					iss >> members.age;
+					iss >> members.topupvalue; //read data from iss
+					iss >> members.memberPoints;
+					iss.ignore();//ignore the buffer
+					//print customer info
+					if (memberidInput == members.memberids) {
+						cout << "-----------------------------------------------------------" << endl;
+						cout << setfill(' ') << setw(35) << "Customer Info" << endl;
+						cout << "Name                     : " << members.names << endl;
+						cout << "MemberID                 : " << members.memberids << endl;
+						cout << "Contact                  : " << members.contact << endl;
+						cout << "Age                      : " << members.age << endl;
+						cout << "Top Up Value(RM)         : " << members.topupvalue << endl;
+						cout << "Member Point(RM1 = 100)  : " << fixed << setprecision(2) << members.memberPoints << endl;
+						break;
+					}
+				}
+				idFile.close();
+				if (memberidInput != members.memberids) { //if the id is not at file then will print Enter a valid member id
+					cout << "Enter a valid member id" << endl;
+				}
+			}
+
+		} while (memberidInput != members.memberids);
+
+		do {
+			TOP_UP_MENU();
+			cout << "Enter the top up option (Press 0 to exit) : ";
+			cin >> topup_option;
+			if (cin.fail())
+			{
+				cin.clear();
+				cin.ignore();
+				cin.sync();
+				cin.get();
+				cout << "Please enter valid selection." << endl;
+				topup_option = 90;
+			}
+
+			else if (topup_option != 0 && topup_option != 1 && topup_option != 2 && topup_option != 3 && topup_option != 4)
+			{
+				cout << "\n";
+				cout << "Please enter valid selection : " << endl;
+			}
+		} while (topup_option != 0 && topup_option != 1 && topup_option != 2 && topup_option != 3 && topup_option != 4);
+
+		// ---------------------- PAYMENT  ---------------------- 
+		add_balance = addbalance(topup_option);
+		members.topupvalue += add_balance;
+
+		cout << "\n";
+		cout << "Payment Successful." << endl;
+
+		// Prompt user whether want to top up again
+		do {
+			cout << "Do you wish to top up again ? (Y/N) : ";
+			cin >> cont;
+
+			if (cont != 'Y' && cont != 'y' && cont != 'N' && cont != 'n')
+			{
+				cout << "\n";
+				cout << "Please enter valid selection." << endl;
+			}
+			else if (cont == 'n' || cont == 'N')
+			{
+			// Display the new balance of the member account
+			cout << "\n";
+			cout << "Thank, You" << endl;
+			cout << "New Account Balance		: RM" << fixed << setprecision(2) << members.topupvalue << endl;
+			cout << "\nPress Enter to continue...\n";
+			cin.get();
+			cin.ignore();
+			break;
+			}
+		} while (cont != 'Y' && cont != 'y');
+
+
+	} while (cont == 'Y' || cont == 'y');
+
+
+	// Update the new card balance 
+	idFile.open("customer_data.txt", ios::in);
+	if (idFile.fail()) { // if file fail to open will print error message
+		cout << "Error Reading File" << endl;
+	}
+	else if (idFile.is_open()) {
+		while (getline(idFile, line)) {
+			lines.push_back(line); //read all the data line by line and store it in vector
+		}
+	}idFile.close();
+
+	temp.open("customer_data.txt");
+	if (temp.is_open()) {
+		linecounter--;
+		for (int i = 0; i < lines.size(); i++) {
+			if (i != linecounter)
+				temp << lines[i] << endl;
+			else
+				temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl;
+		}
+	}temp.close();
+
+	home(); 
+}
+
+void TOP_UP_MENU()
+{
+	string temp_line = "";
+	ifstream topup_menu;
+	TOPUP topup;
+	topup.option = 0;
+	topup.amount = 0.0;
+	topup_menu.open("top_up.txt");
+
+	if (!topup_menu)
+	{
+		cout << "Error opening file" << endl; //check if file opens successfully
+	}
+
+	else if (!topup_menu.eof()) {
+		cout << "\n";
+		cout << "TOP UP OPTION : " << endl;
+	}
+
+	// Display the available top up option
+	do {
+		getline(topup_menu, temp_line); //read from the file line by line
+		istringstream menuSS(temp_line); //create a stringstream object and store line in menuSS
+		menuSS >> topup.option;// read the number of option
+		menuSS.ignore();
+		menuSS >> topup.amount; // read the option of top up amount
+		cout << topup.option << " >> " << "RM " << fixed << setprecision(2) << topup.amount << endl;
+	} while (topup_menu.good());
+	topup_menu.close();
+}
+
+double addbalance(int option)
+{
+	int count = 0, payment_option = 0;
+	double add_bal = 0.0;
+	double topup_value[4] = { 0.0 };
+	string temp_line = "";
+	ifstream topup_menu;
+	TOPUP topup;
+	Members members;
+	const double CHARGE = 0.50;		// fixed the service charges
+	topup.option = 0;
+	topup.amount = 0.0;
+
+	topup_menu.open("top_up.txt");
+	if (!topup_menu)
+	{
+		cout << "Error opening file" << endl; //check if file opens successfully
+	}
+
+	else if (!topup_menu.eof()) {
+		do {
+			getline(topup_menu, temp_line); //read from the file line by line
+			istringstream menuSS(temp_line); //create a stringstream object and store line in menuSS
+			menuSS >> topup.option;// read the number of option
+			menuSS.ignore();
+			menuSS >> topup.amount; // read the option of top up amount
+			topup_value[count] = topup.amount;		// store the top up amount in an array to be display
+			count++;
+		} while (topup_menu.good());
+	}
+	topup_menu.close();
+
+
+	// add the value to the balance according to user selection
+	switch (option)
+	{
+	case 0:
+		cout << "Thank,You";
+		home();
+
+	case 1:
+		add_bal = topup_value[0] - CHARGE;		// each topup_value refers to top up amount according to the sequence 
+		break;
+
+	case 2:
+		add_bal = topup_value[1] - CHARGE;
+		break;
+
+	case 3:
+		add_bal = topup_value[2] - CHARGE;
+		break;
+
+	case 4:
+		add_bal = topup_value[3] - CHARGE;
+		break;
+
+	default:
+		cout << "Please enter valid option." << endl;
+	}
+
+	do {
+		cout << "\n";
+		cout << "===========================================================" << endl;
+		cout << setw(32) << "CHECKOUT" << endl;
+		cout << "===========================================================" << endl;
+		cout << "Top up amount	: " << fixed << setprecision(2) << add_bal + CHARGE << endl;
+		cout << "Service Charges	: -" << fixed << setprecision(2) << CHARGE << endl;
+		cout << "Subtotal	: " << fixed << setprecision(2) << add_bal << endl;
+		cout << "Press 1 to confirm payment, 0 to cancel payment." << endl;		// confirmation of payment
+		cout << "Enter your selection : ";
+		cin >> payment_option;
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+			cin.sync();
+			cout << "Please enter valid selection." << endl;
+			payment_option = 9;
+		}
+
+		else if (payment_option != 1 && payment_option != 0)
+		{
+			cout << "\n";
+			cout << "Please enter valid selection. " << endl;
+		}
+
+	} while (payment_option != 1 && payment_option != 0);
+
+
+	if (payment_option == 0)
+	{
+		cout << "Thank You.";
+		home();
+	}
+
+	return add_bal;
+}
 
 /*                    MENU MODULE USER-DECLARED FUNCTIONS                   */
 void MENU() {
@@ -396,7 +690,7 @@ void MENU() {
 			cout << "4: \t Premium" << endl;
 			cout << "================================================================";
 			cout << "\nEnter 0 to exit to main menu. \t Enter 9 to proceed to checkout.";
-			cout << "\nEnter selection: ";
+			cout << "\n\nEnter selection: ";
 			cin >> categoryChoice;
 			if (cin.fail()) { //validate input is only an integer 
 				cin.clear();
@@ -484,7 +778,8 @@ void MENU() {
 
 			cout << setw(65) << setfill('=') << endl;
 			cout << "\n";
-			cout << "Press 0 to return to order menu, 1 to edit orders, 2 to remove an order, or 9 to proceed." << endl;
+			cout << "Press 0 to return to order menu, 1 to edit orders, 2 to remove an order, 3 to clear all orders, or 9 to proceed." << endl;
+			cout << "\nEnter selection: ";
 			cin >> checkoutChoice;
 			if (cin.fail()) { //validate input is only an integer
 				cin.clear();
@@ -506,7 +801,7 @@ void MENU() {
 					orderList[editNum - 1].quantity = newQuantity;
 				}
 				else {
-					cout << "Please enter a Valid Selection.";
+					cout << "\nPlease enter a Valid Selection.";
 					cout << "\n";
 					continue;
 				}
@@ -519,17 +814,22 @@ void MENU() {
 					orderList.erase(orderList.begin() + editNum - 1);
 				}
 				else {
-					cout << "Invalid selection.";
+					cout << "\nPlease enter a Valid Selection.";
 					cout << "\n";
 					continue;
 				}
 			}
+			else if (checkoutChoice == 3) {
+				//clear all orders
+				orderList.clear();
+				continue;
+			} 
 			else if (checkoutChoice == 9) {
 				//proceed to payment
 				break;
 			}
 			else {
-				cout << "Invalid selection.";
+				cout << "\nPlease enter a Valid Selection.";
 				cout << "\n";
 				continue;
 			}
@@ -537,38 +837,42 @@ void MENU() {
 
 		if (checkoutChoice == 9)
 		{
-			cout << setw(65) << setfill('=') << endl;
-			cout << "\n";
-			cout << "Dine-in or Take-away?" << endl;
-			cout << "Press 1 for dine-in, 2 for take-away." << endl;
-			cout << setw(65) << setfill('=') << endl;
-			cout << "\n";
+			do
+			{
+				cout << setw(65) << setfill('=') << endl;
+				cout << "\n";
+				cout << "Dine-in or Take-away?" << endl;
+				cout << "Press 1 for dine-in, 2 for take-away." << endl;
+				cout << setw(65) << setfill('=') << endl;
+				cout << "\nEnter selection: ";
 
-			cout << fixed << setprecision(2) << endl; //to ensure display for price has two decimal points (RM x.xx)
+				cout << fixed << setprecision(2) << endl; //to ensure display for price has two decimal points (RM x.xx)
 
-			cin >> diningMethod;
-			if (cin.fail()) {
-				cin.clear();
-				cin.sync();
-				cin.ignore();
-				diningMethod = 5; //set to invalid number to continue loop
-			}
-			if (diningMethod == 1) {
-				break;
-			}
-			else if (diningMethod == 2) {
-				break;
-			}
-			else {
-				cout << "Please enter a Valid Selection." << endl;
-				continue;
-			}
+				cin >> diningMethod;
+				if (cin.fail()) {
+					cin.clear();
+					cin.sync();
+					cin.ignore();
+					diningMethod = 99; //set to invalid number to continue loop
+				}
+				switch (diningMethod)
+				{
+				case 1:
+				case 2:
+				{
+					cin.get();
+					payment(diningMethod);
+					break;
+				}
+				default: {
+					cout << "\nPlease enter a Valid Selection." << endl;
+				}
+				}
+			} while (diningMethod != 1 && diningMethod != 2);
 		}
 		else
 			continue;
 	} while (categoryChoice != 9 || checkoutChoice != 9);
-	cin.get();
-	payment(diningMethod);
 }
 
 void BREAKFAST_MENU() {
@@ -624,7 +928,7 @@ void BREAKFAST_MENU() {
 			return; //returns to menu
 		}
 		else if (listChoice > breakfast.list) { //checks for user input error (selection num greater than listed)
-			cout << "Please enter a Valid Selection.";
+			cout << "\nPlease enter a Valid Selection.";
 			cout << "\n";
 			return;
 		}
@@ -653,6 +957,7 @@ void BREAKFAST_MENU() {
 		cout << "\n";
 		cout << "Ala Carte or Set Meal?" << endl;
 		cout << "Press 1 for ala carte, 2 for set meal." << endl;
+		cout << "\nEnter selection: ";
 		cin >> meal_selection;
 		if (cin.fail()) {
 			cin.clear();
@@ -662,13 +967,13 @@ void BREAKFAST_MENU() {
 		switch (meal_selection) {
 		case 1:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> breakfast.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			breakfast.itemName += " (A)";
@@ -678,13 +983,13 @@ void BREAKFAST_MENU() {
 		}
 		case 2:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> breakfast.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			breakfast.itemName += " (SET)";
@@ -693,7 +998,7 @@ void BREAKFAST_MENU() {
 			break;
 		}
 		default:
-			cout << "Please enter a Valid Selection." << endl;
+			cout << "\nPlease enter a Valid Selection." << endl;
 		}
 
 	}
@@ -741,12 +1046,12 @@ void CHICKEN_MENU() {
 		cout << "Enter selection: ";
 
 		cin >> listChoice;
+		cout << '\n';
 		if (cin.fail()) {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
 		}
-		cout << '\n';
 		if (listChoice == 0)
 		{
 			return; //returns to main menu
@@ -783,6 +1088,7 @@ void CHICKEN_MENU() {
 		cout << "\n";
 		cout << "Ala Carte, Medium or Large set?" << endl;
 		cout << "Press 1 for ala carte, 2 for medium set, 3 for large set." << endl;
+		cout << "\nEnter selection: ";
 		cin >> meal_selection;
 		if (cin.fail()) {
 			cin.clear();
@@ -792,13 +1098,13 @@ void CHICKEN_MENU() {
 		switch (meal_selection) {
 		case 1:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> chicken.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			chicken.itemName += " (A)";
@@ -808,13 +1114,13 @@ void CHICKEN_MENU() {
 		}
 		case 2:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> chicken.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			chicken.itemName += " (M)";
@@ -824,13 +1130,13 @@ void CHICKEN_MENU() {
 		}
 		case 3:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> chicken.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			chicken.itemName += " (L)";
@@ -839,7 +1145,7 @@ void CHICKEN_MENU() {
 			break;
 		}
 		default:
-			cout << "Please Enter a Valid Selection." << endl;
+			cout << "\nPlease Enter a Valid Selection." << endl;
 		}
 
 	}
@@ -899,7 +1205,7 @@ void BEEF_MENU() {
 			return; //returns to main menu
 		}
 		else if (listChoice > beef.list) { //checks for user input error (selection num greater than listed)
-			cout << "Please Enter a Valid Selection.";
+			cout << "\nPlease Enter a Valid Selection.";
 			cout << "\n";
 			return;
 		}
@@ -928,6 +1234,7 @@ void BEEF_MENU() {
 		cout << "\n";
 		cout << "Ala Carte, Medium or Large set?" << endl;
 		cout << "Press 1 for ala carte, 2 for medium set, 3 for large set." << endl;
+		cout << "\nEnter selection: ";
 		cin >> meal_selection;
 		if (cin.fail()) {
 			cin.clear();
@@ -937,13 +1244,13 @@ void BEEF_MENU() {
 		switch (meal_selection) {
 		case 1:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> beef.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			beef.itemName += " (A)";
@@ -953,13 +1260,13 @@ void BEEF_MENU() {
 		}
 		case 2:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> beef.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			beef.itemName += " (M)";
@@ -969,13 +1276,13 @@ void BEEF_MENU() {
 		}
 		case 3:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> beef.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			beef.itemName += " (L)";
@@ -984,7 +1291,7 @@ void BEEF_MENU() {
 			break;
 		}
 		default:
-			cout << "Please Enter a Valid Selection." << endl;
+			cout << "\nPlease Enter a Valid Selection." << endl;
 		}
 
 	}
@@ -1044,7 +1351,7 @@ void PREMIUM_MENU() {
 			return; //returns to main menu
 		}
 		else if (listChoice > premium.list) { //checks for user input error (selection num greater than listed)
-			cout << "Please Enter a Valid Selection.";
+			cout << "\nPlease Enter a Valid Selection.";
 			cout << "\n";
 			return;
 		}
@@ -1073,6 +1380,7 @@ void PREMIUM_MENU() {
 		cout << "\n";
 		cout << "Ala Carte, Medium or Large set?" << endl;
 		cout << "Press 1 for ala carte, 2 for medium set, 3 for large set." << endl;
+		cout << "\nEnter selection: ";
 		cin >> meal_selection;
 		if (cin.fail()) {
 			cin.clear();
@@ -1082,13 +1390,13 @@ void PREMIUM_MENU() {
 		switch (meal_selection) {
 		case 1:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> premium.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			premium.itemName += " (A)";
@@ -1098,13 +1406,13 @@ void PREMIUM_MENU() {
 		}
 		case 2:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> premium.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			premium.itemName += " (M)";
@@ -1114,13 +1422,13 @@ void PREMIUM_MENU() {
 		}
 		case 3:
 		{
-			cout << "Enter quantity: ";
+			cout << "\nEnter quantity: ";
 			cin >> premium.quantity;
 			if (cin.fail()) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Please enter a Valid Selection." << endl;
+				cout << "\nPlease enter a Valid Selection." << endl;
 				break;
 			}
 			premium.itemName += " (L)";
@@ -1129,7 +1437,7 @@ void PREMIUM_MENU() {
 			break;
 		}
 		default:
-			cout << "Please Enter a Valid Selection." << endl;
+			cout << "\nPlease Enter a Valid Selection." << endl;
 		}
 
 	}
@@ -1184,7 +1492,7 @@ void DRINKS_MENU() {
 			return; //returns to main menu
 		}
 		else if (listChoice > drinks.list) { //checks for user input error (selection num greater than listed)
-			cout << "Please Enter a Valid Selection.";
+			cout << "\nPlease Enter a Valid Selection.";
 			cout << "\n";
 			return;
 		}
@@ -1216,7 +1524,7 @@ void DRINKS_MENU() {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
-			cout << "Please enter a Valid Selection." << endl;
+			cout << "\nPlease enter a Valid Selection." << endl;
 		}
 		drinks.itemName += " (A)";
 		drinks.price = drinks.alaCarte * drinks.quantity;
@@ -1273,7 +1581,7 @@ void DESSERT_MENU() {
 			return; //returns to main menu
 		}
 		else if (listChoice > dessert.list) { //checks for user input error (selection num greater than listed)
-			cout << "Please Enter a Valid Selection.";
+			cout << "\nPlease Enter a Valid Selection.";
 			cout << "\n";
 			return;
 		}
@@ -1304,7 +1612,7 @@ void DESSERT_MENU() {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
-			cout << "Please enter a Valid Selection." << endl;
+			cout << "\nPlease enter a Valid Selection." << endl;
 		}
 		dessert.itemName += " (A)";
 		dessert.price = dessert.alaCarte * dessert.quantity;
@@ -1361,7 +1669,7 @@ void SIDES_MENU() {
 			return; //returns to main menu
 		}
 		else if (listChoice > sides.list) { //checks for user input error (selection num greater than listed)
-			cout << "Please Enter a Valid Selection.";
+			cout << "\nPlease Enter a Valid Selection.";
 			cout << "\n";
 			return;
 		}
@@ -1392,7 +1700,7 @@ void SIDES_MENU() {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
-			cout << "Please enter a Valid Selection." << endl;
+			cout << "\nPlease enter a Valid Selection." << endl;
 		}
 		sides.itemName += " (A)";
 		sides.price = sides.alaCarte * sides.quantity;
@@ -1401,7 +1709,7 @@ void SIDES_MENU() {
 }
 
 
-/*                    PAYMENT MODULE USER-DECLARED FUNCTIONS                   */
+/*                    PAYMENT MODULE USER-DECLARED FUNCTION                   */
 void payment(int dine) {
 	struct Members {
 		string memberids;
@@ -1421,13 +1729,6 @@ void payment(int dine) {
 	ofstream temp;
 	vector<string>lines;
 	Members members;
-
-#ifdef _WIN32
-	system("cls");
-#else
-	system("clear");
-#endif
-
 
 	cout << "===========================================================" << endl;
 	cout << "                       Payment                             " << endl;
@@ -1493,8 +1794,6 @@ void payment(int dine) {
 				cout << "Enter a valid member id" << endl;
 			}
 		}
-
-
 
 	} while (memberidInput != members.memberids);
 
@@ -1619,6 +1918,7 @@ void payment(int dine) {
 				}
 			}temp.close();
 
+			orderList.clear(); //cancels order selection
 			cout << "Press any key to return main menu -->";
 			cin.ignore();
 			cin.get();
@@ -1661,6 +1961,7 @@ void payment(int dine) {
 						temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl;
 				}
 			}temp.close();
+			orderList.clear(); //cancels order selection
 			cout << "Press any key to return main menu -->";
 			cin.ignore();
 			cin.get();
@@ -1668,6 +1969,7 @@ void payment(int dine) {
 
 		}
 		else if (payDecicion == 2) {
+			orderList.clear(); //cancels order selection
 			cout << "Thank You" << endl;
 			cout << "Press any key to return main menu -->";
 			cin.ignore();
@@ -1695,6 +1997,7 @@ void payment(int dine) {
 				cout << "Proceed to top up module";
 			}
 			else if (topupDecision == 2) {
+				orderList.clear(); //cancels order selection
 				cout << "Thank You" << endl;
 				cout << "Press any key to return main menu -->";
 				cin.ignore();
@@ -1730,4 +2033,21 @@ double memberpointsub2(double subtotal, double* convert, double topupvalue) {
 	topupvalue = topupvalue + *convert - subtotal; //all point will use for payment and the insufficient part will be pay by the card balance
 	*convert = 0; //pointer for changing the converted member point value
 	return topupvalue;
+}
+
+/*						     EXIT PROGRAM LOGO FUNCTION				         */
+void exitProgram() {
+	cout << "  _______   _    _              _   _   _  __   __     __   ____    _    _     _ " << endl;
+	cout << " |__   __| | |  | |     /\\     | \\ | | | |/ /   \\ \\   / /  / __ \\  | |  | |   | |" << endl;
+	cout << "    | |    | |__| |    /  \\    |  \\| | | ' /     \\ \\_/ /  | |  | | | |  | |   | |" << endl;
+	cout << "    | |    |  __  |   / /\\ \\   | . ` | |  <       \\   /   | |  | | | |  | |   | |" << endl;
+	cout << "    | |    | |  | |  / ____ \\  | |\\  | | . \\       | |    | |__| | | |__| |   |_|" << endl;
+	cout << "    |_|    |_|  |_| /_/    \\_\\ |_| \\_| |_|\\_\\      |_|     \\____/   \\____/    (_)" << endl;
+	cout << "\n\n";
+	cout << "           _____    ____     ____    _____    ____   __     __  ______           " << endl;
+	cout << "          / ____|  / __ \\   / __ \\  |  __ \\  |  _ \\  \\ \\   / / |  ____|          " << endl;
+	cout << "         | |  __  | |  | | | |  | | | |  | | | |_) |  \\ \\_/ /  | |__             " << endl;
+	cout << "         | | |_ | | |  | | | |  | | | |  | | |  _ <    \\   /   |  __|            " << endl;
+	cout << "         | |__| | | |__| | | |__| | | |__| | | |_) |    | |    | |____           " << endl;	
+	cout << "          \\_____|  \\____/   \\____/  |_____/  |____/     |_|    |______|          " << endl;
 }

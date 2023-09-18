@@ -96,7 +96,7 @@ void home() {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
-			cout << "Please Enter a Valid Number" << endl;
+			cout << "Please Enter a Valid Number." << endl;
 		}
 
 
@@ -133,6 +133,7 @@ void home() {
 		}
 
 		default:
+			cout << "Please Enter a Valid Number." << endl;
 			break;
 		}
 
@@ -410,7 +411,6 @@ void topup()
 	ofstream temp;
 	Members members;
 
-	do {
 		cout << "===========================================================" << endl;
 		cout << "                         TOP UP                           " << endl;
 		cout << "===========================================================" << endl;
@@ -458,6 +458,7 @@ void topup()
 
 		} while (memberidInput != members.memberids);
 
+	do {
 		do {
 			TOP_UP_MENU();
 			cout << "Enter the top up option (Press 0 to exit) : ";
@@ -482,6 +483,7 @@ void topup()
 		// ---------------------- PAYMENT  ---------------------- 
 		add_balance = addbalance(topup_option);
 		members.topupvalue += add_balance;
+
 
 		cout << "\n";
 		cout << "Payment Successful." << endl;
@@ -509,31 +511,28 @@ void topup()
 			}
 		} while (cont != 'Y' && cont != 'y');
 
-
 	} while (cont == 'Y' || cont == 'y');
 
-
-	// Update the new card balance 
-	idFile.open("customer_data.txt", ios::in);
-	if (idFile.fail()) { // if file fail to open will print error message
-		cout << "Error Reading File" << endl;
-	}
-	else if (idFile.is_open()) {
-		while (getline(idFile, line)) {
-			lines.push_back(line); //read all the data line by line and store it in vector
+		idFile.open("customer_data.txt", ios::in);
+		if (idFile.fail()) { // if file fail to open will print error message
+			cout << "Error Reading File" << endl;
 		}
-	}idFile.close();
+		else if (idFile.is_open()) {
+			while (getline(idFile, line)) {
+				lines.push_back(line); //read all the data line by line and store it in vector
+			}
+		}idFile.close();
 
-	temp.open("customer_data.txt");
-	if (temp.is_open()) {
-		linecounter--;
-		for (int i = 0; i < lines.size(); i++) {
-			if (i != linecounter)
-				temp << lines[i] << endl;
-			else
-				temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl;
-		}
-	}temp.close();
+		temp.open("customer_data.txt");
+		if (temp.is_open()) { 
+			linecounter--; 
+			for (int i = 0; i < lines.size(); i++) { 
+				if (i != linecounter) 
+					temp << lines[i] << endl; 
+				else
+					temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl; 
+			}  
+		}temp.close(); 
 
 	home(); 
 }

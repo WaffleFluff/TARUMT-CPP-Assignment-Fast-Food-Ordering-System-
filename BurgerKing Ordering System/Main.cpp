@@ -361,15 +361,15 @@ void login(vector<Customer>& customers)
 				iss.ignore();//ignore the buffer
 				//print customer info
 				if (MemberID == customer.memberID) {
-					cout << "--------------------------------------------" << endl;
+					cout << "-----------------------------------------------------------" << endl;
 					cout << setw(27) << "Customer Info" << endl;
-					cout << "Name          : " << customer.name << endl;
-					cout << "MemberID      : " << customer.memberID << endl;
-					cout << "Balance       : " << fixed << setprecision(2) << customer.balance << endl;
-					cout << "Member Point  : " << fixed << setprecision(2) << customer.memberPoint << endl;
-					cout << "Member Age    : " << customer.age << endl;
-					cout << "Member Contact: " << customer.contact << endl;
-					cout << "--------------------------------------------" << endl;
+					cout << "Name \t\t\t: " << customer.name << endl;
+					cout << "MemberID \t\t: " << customer.memberID << endl;
+					cout << "Card Balance (RM) \t: " << fixed << setprecision(2) << customer.balance << endl;
+					cout << "Member Point \t\t: " << fixed << setprecision(2) << customer.memberPoint << endl;
+					cout << "Member Age \t\t: " << customer.age << endl;
+					cout << "Member Contact\t\t: " << customer.contact << endl;
+					cout << "-----------------------------------------------------------" << endl;
 					break;
 				}
 			}
@@ -443,8 +443,9 @@ void topup()
 					cout << "MemberID                 : " << members.memberids << endl;
 					cout << "Contact                  : " << members.contact << endl;
 					cout << "Age                      : " << members.age << endl;
-					cout << "Top Up Value(RM)         : " << members.topupvalue << endl;
+					cout << "Card Balance (RM)        : " << members.topupvalue << endl;
 					cout << "Member Point(RM1 = 100)  : " << fixed << setprecision(2) << members.memberPoints << endl;
+					cout << "-----------------------------------------------------------" << endl;
 					break;
 				}
 			}
@@ -1780,8 +1781,9 @@ void payment(int dine) {
 					cout << "MemberID                 : " << members.memberids << endl;
 					cout << "Contact                  : " << members.contact << endl;
 					cout << "Age                      : " << members.age << endl;
-					cout << "Top Up Value(RM)         : " << members.topupvalue << endl;
+					cout << "Card Balance(RM)         : " << members.topupvalue << endl;
 					cout << "Member Point(RM1 = 100)  : " << fixed << setprecision(2) << members.memberPoints << endl;
+					cout << "-----------------------------------------------------------" << endl;
 					break;
 				}
 			}
@@ -1990,7 +1992,8 @@ void payment(int dine) {
 				continue;
 			}
 			else if (topupDecision == 1) {
-				cout << "Proceed to top up module";
+				cout << "Proceed to top up module" << endl;
+				topup();
 			}
 			else if (topupDecision == 2) {
 				orderList.clear(); //cancels order selection

@@ -510,7 +510,6 @@ void topup()
 			break;
 			}
 		} while (cont != 'Y' && cont != 'y');
-
 	} while (cont == 'Y' || cont == 'y');
 
 		idFile.open("customer_data.txt", ios::in);

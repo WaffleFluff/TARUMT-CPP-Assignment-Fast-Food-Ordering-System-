@@ -96,7 +96,7 @@ void home() {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
-			cout << "Please Enter a Valid Number" << endl;
+			cout << "Please Enter a Valid Number." << endl;
 		}
 
 
@@ -133,6 +133,7 @@ void home() {
 		}
 
 		default:
+			cout << "Please Enter a Valid Number." << endl;
 			break;
 		}
 
@@ -509,6 +510,26 @@ void topup()
 			}
 		} while (cont != 'Y' && cont != 'y');
 
+		idFile.open("customer_data.txt", ios::in);
+		if (idFile.fail()) { // if file fail to open will print error message
+			cout << "Error Reading File" << endl;
+		}
+		else if (idFile.is_open()) {
+			while (getline(idFile, line)) {
+				lines.push_back(line); //read all the data line by line and store it in vector
+			}
+		}idFile.close();
+
+		temp.open("customer_data.txt");
+		if (temp.is_open()) { 
+			linecounter--; 
+			for (int i = 0; i < lines.size(); i++) { 
+				if (i != linecounter) 
+					temp << lines[i] << endl; 
+				else
+					temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl; 
+			}  
+		}temp.close(); 
 
 	} while (cont == 'Y' || cont == 'y');
 

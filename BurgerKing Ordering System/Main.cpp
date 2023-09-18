@@ -47,6 +47,8 @@ void writeToFile(const Customer& customer);
 
 /*						 Top up Module                  */
 void topup();
+void TOP_UP_MENU();
+double addbalance(int option);
 
 /*					     Menu Module				       */
 void MENU();
@@ -58,7 +60,6 @@ void DRINKS_MENU();
 void DESSERT_MENU();
 void SIDES_MENU();
 
-/*Payment and Member Point module*/
 /*                  Payment & Member Point Module                */
 void payment(int dine);
 double memberpointadd(double subtotal, double memberpoint);
@@ -255,11 +256,11 @@ void registerNewCustomer(vector<Customer>& customers)
 
 	cout << "====================REGISTER====================\n\n";
 
+	cin.ignore();
 	while (true) // Validate the name
 	{
 		cout << "Full Name---------->";
-		cin.ignore();
-		getline(cin, newCustomer.name);
+		getline(cin,newCustomer.name);
 
 		if (validateName(newCustomer.name))
 		{
@@ -269,6 +270,7 @@ void registerNewCustomer(vector<Customer>& customers)
 		else
 		{
 			cout << "Please enter a valid name, Thank You\n";
+			cout << flush;
 		}
 	}
 
@@ -325,7 +327,7 @@ void registerNewCustomer(vector<Customer>& customers)
 	cout << "---------------------------------------\n";
 
 	writeToFile(newCustomer);
-
+	cout << flush;
 }
 
 
@@ -398,8 +400,6 @@ struct Members {
 
 void topup()
 {
-	void TOP_UP_MENU();
-	double addbalance(int option);
 	//declare variable
 	string memberidInput = " ", line = " ", card_num = " ", card_pin = " ";
 	vector<string>lines;
@@ -482,33 +482,58 @@ void topup()
 		add_balance = addbalance(topup_option);
 		members.topupvalue += add_balance;
 
-
-		cout << "\n";
-		cout << "Payment Successful." << endl;
-		cout << "New Account Balance\t\t\t: RM" << fixed << setprecision(2) << members.topupvalue << endl; 
-
-		// Prompt user whether want to top up again
-		do {
-			cout << "Do you wish to top up again ? (Y/N)\t: ";
-			cin >> cont;
-
-			if (cont != 'Y' && cont != 'y' && cont != 'N' && cont != 'n')
-			{
-				cout << "\n";
-				cout << "Please enter valid selection." << endl;
+		if (topup_option == 0) {
+			idFile.open("customer_data.txt", ios::in);
+			if (idFile.fail()) { // if file fail to open will print error message
+				cout << "Error Reading File" << endl;
 			}
-			else if (cont == 'n' || cont == 'N')
-			{
-			// Display the new balance of the member account
+			else if (idFile.is_open()) {
+				while (getline(idFile, line)) {
+					lines.push_back(line); //read all the data line by line and store it in vector
+				}
+			}idFile.close();
+
+			temp.open("customer_data.txt");
+			if (temp.is_open()) {
+				linecounter--;
+				for (int i = 0; i < lines.size(); i++) {
+					if (i != linecounter)
+						temp << lines[i] << endl;
+					else
+						temp << members.memberids << "," << members.names << "," << members.contact << "," << members.age << " " << fixed << setprecision(2) << members.topupvalue << " " << members.memberPoints << " " << endl;
+				}
+			}temp.close();
+			home();
+		}
+		else
+		{
 			cout << "\n";
-			cout << "Thank You." << endl;
+			cout << "Payment Successful." << endl;
 			cout << "New Account Balance\t\t\t: RM" << fixed << setprecision(2) << members.topupvalue << endl;
-			cout << "\nPress Enter to continue...";
-			cin.get();
-			cin.ignore();
-			break;
-			}
-		} while (cont != 'Y' && cont != 'y');
+
+			// Prompt user whether want to top up again
+			do {
+				cout << "Do you wish to top up again ? (Y/N)\t: ";
+				cin >> cont;
+
+				if (cont != 'Y' && cont != 'y' && cont != 'N' && cont != 'n')
+				{
+					cout << "\n";
+					cout << "Please enter valid selection." << endl;
+				}
+				else if (cont == 'n' || cont == 'N')
+				{
+					// Display the new balance of the member account
+					cout << "\n";
+					cout << "Thank You." << endl;
+					cout << "New Account Balance\t\t\t: RM" << fixed << setprecision(2) << members.topupvalue << endl;
+					cout << "\nPress Enter to continue...";
+					cin.get();
+					cin.ignore();
+					break;
+				}
+			} while (cont != 'Y' && cont != 'y');
+		}
 	} while (cont == 'Y' || cont == 'y');
 
 		idFile.open("customer_data.txt", ios::in);
@@ -603,8 +628,9 @@ double addbalance(int option)
 	switch (option)
 	{
 	case 0:
+		add_bal = add_bal;
 		cout << "Thank,You";
-		home();
+		return add_bal; // return the value to the topup function
 
 	case 1:
 		add_bal = topup_value[0] - CHARGE;		// each topup_value refers to top up amount according to the sequence 

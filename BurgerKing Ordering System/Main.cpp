@@ -140,9 +140,8 @@ void home() {
 		cout << "\nPress Enter to continue...";
 		cin.ignore();
 		cin.get();
-
-
 	} while (choice != 5);
+
 }
 
 //function display logo
@@ -411,52 +410,50 @@ void topup()
 	ofstream temp;
 	Members members;
 
-		cout << "===========================================================" << endl;
-		cout << "                         TOP UP                           " << endl;
-		cout << "===========================================================" << endl;
+	cout << "===========================================================" << endl;
+	cout << "                         TOP UP                           " << endl;
+	cout << "===========================================================" << endl;
 
+	do {
+		cout << "Enter the card number: ";
+		cin >> memberidInput;
+		transform(memberidInput.begin(), memberidInput.end(), memberidInput.begin(), ::toupper);// convert lower case to upper case
 
-		do {
-			cout << "Enter the card number: ";
-			cin >> memberidInput;
-			transform(memberidInput.begin(), memberidInput.end(), memberidInput.begin(), ::toupper);// convert lower case to upper case
-
-			linecounter = 0;//reset counter
-			idFile.open("customer_data.txt", ios::in);
-			if (idFile.fail()) {
-				cout << "Error Reading File" << endl;// if file cannot open print Error Reading File and close the program
-			}
-			else if (!idFile.eof()) {
-				while (getline(idFile, line)) {
-					linecounter++; //counter for the line number or customer info
-					istringstream iss(line); // store line in iss
-					getline(iss, members.memberids, ',');
-					getline(iss, members.names, ',');  // Read name until comma
-					getline(iss, members.contact, ',');
-					iss >> members.age;
-					iss >> members.topupvalue; //read data from iss
-					iss >> members.memberPoints;
-					iss.ignore();//ignore the buffer
-					//print customer info
-					if (memberidInput == members.memberids) {
-						cout << "-----------------------------------------------------------" << endl;
-						cout << setfill(' ') << setw(35) << "Customer Info" << endl;
-						cout << "Name                     : " << members.names << endl;
-						cout << "MemberID                 : " << members.memberids << endl;
-						cout << "Contact                  : " << members.contact << endl;
-						cout << "Age                      : " << members.age << endl;
-						cout << "Top Up Value(RM)         : " << members.topupvalue << endl;
-						cout << "Member Point(RM1 = 100)  : " << fixed << setprecision(2) << members.memberPoints << endl;
-						break;
-					}
-				}
-				idFile.close();
-				if (memberidInput != members.memberids) { //if the id is not at file then will print Enter a valid member id
-					cout << "Enter a valid member id" << endl;
+		linecounter = 0;//reset counter
+		idFile.open("customer_data.txt", ios::in);
+		if (idFile.fail()) {
+			cout << "Error Reading File" << endl;// if file cannot open print Error Reading File and close the program
+		}
+		else if (!idFile.eof()) {
+			while (getline(idFile, line)) {
+				linecounter++; //counter for the line number or customer info
+				istringstream iss(line); // store line in iss
+				getline(iss, members.memberids, ',');
+				getline(iss, members.names, ',');  // Read name until comma
+				getline(iss, members.contact, ',');
+				iss >> members.age;
+				iss >> members.topupvalue; //read data from iss
+				iss >> members.memberPoints;
+				iss.ignore();//ignore the buffer
+				//print customer info
+				if (memberidInput == members.memberids) {
+					cout << "-----------------------------------------------------------" << endl;
+					cout << setfill(' ') << setw(35) << "Customer Info" << endl;
+					cout << "Name                     : " << members.names << endl;
+					cout << "MemberID                 : " << members.memberids << endl;
+					cout << "Contact                  : " << members.contact << endl;
+					cout << "Age                      : " << members.age << endl;
+					cout << "Top Up Value(RM)         : " << members.topupvalue << endl;
+					cout << "Member Point(RM1 = 100)  : " << fixed << setprecision(2) << members.memberPoints << endl;
+					break;
 				}
 			}
-
-		} while (memberidInput != members.memberids);
+			idFile.close();
+			if (memberidInput != members.memberids) { //if the id is not at file then will print Enter a valid member id
+				cout << "Enter a valid member id" << endl;
+			}
+		}
+	} while (memberidInput != members.memberids);
 
 	do {
 		do {
@@ -487,10 +484,11 @@ void topup()
 
 		cout << "\n";
 		cout << "Payment Successful." << endl;
+		cout << "New Account Balance\t\t\t: RM" << fixed << setprecision(2) << members.topupvalue << endl; 
 
 		// Prompt user whether want to top up again
 		do {
-			cout << "Do you wish to top up again ? (Y/N) : ";
+			cout << "Do you wish to top up again ? (Y/N)\t: ";
 			cin >> cont;
 
 			if (cont != 'Y' && cont != 'y' && cont != 'N' && cont != 'n')
@@ -502,8 +500,8 @@ void topup()
 			{
 			// Display the new balance of the member account
 			cout << "\n";
-			cout << "Thank, You" << endl;
-			cout << "New Account Balance		: RM" << fixed << setprecision(2) << members.topupvalue << endl;
+			cout << "Thank You." << endl;
+			cout << "New Account Balance\t\t\t: RM" << fixed << setprecision(2) << members.topupvalue << endl;
 			cout << "\nPress Enter to continue...\n";
 			cin.get();
 			cin.ignore();
@@ -2048,4 +2046,6 @@ void exitProgram() {
 	cout << "         | | |_ | | |  | | | |  | | | |  | | |  _ <    \\   /   |  __|            " << endl;
 	cout << "         | |__| | | |__| | | |__| | | |__| | | |_) |    | |    | |____           " << endl;	
 	cout << "          \\_____|  \\____/   \\____/  |_____/  |____/     |_|    |______|          " << endl;
+
+	exit(0);
 }

@@ -96,7 +96,6 @@ void home() {
 			cin.clear();
 			cin.sync();
 			cin.ignore();
-			cout << "Please Enter a Valid Number." << endl;
 		}
 
 
@@ -133,13 +132,13 @@ void home() {
 		}
 
 		default:
-			cout << "Please Enter a Valid Number." << endl;
+			cout << "\nPlease Enter a Valid Number." << endl;
 			break;
 		}
 
 		cout << "\nPress Enter to continue...";
-		cin.ignore();
 		cin.get();
+		cin.ignore();
 	} while (choice != 5);
 
 }
@@ -187,7 +186,7 @@ bool validateName(const string& name)
 	}
 	for (char i : name)
 	{
-		if (!isalpha(i) && i != ' ')
+		if (!isalpha(i) && i != ' ' && i != '\'')
 		{
 			return false;
 		}
@@ -326,6 +325,7 @@ void registerNewCustomer(vector<Customer>& customers)
 	cout << "---------------------------------------\n";
 
 	writeToFile(newCustomer);
+
 }
 
 
@@ -336,7 +336,7 @@ void login(vector<Customer>& customers)
 	ifstream inFile;
 	string templine;
 	int lcter = 0;
-	cout << "====================LOGIN====================\n\n";
+	cout << "====================ACCOUNT INFO====================\n\n";
 	
 	do {
 		cout << "Enter Member ID: ";
@@ -502,7 +502,7 @@ void topup()
 			cout << "\n";
 			cout << "Thank You." << endl;
 			cout << "New Account Balance\t\t\t: RM" << fixed << setprecision(2) << members.topupvalue << endl;
-			cout << "\nPress Enter to continue...\n";
+			cout << "\nPress Enter to continue...";
 			cin.get();
 			cin.ignore();
 			break;
@@ -2047,5 +2047,5 @@ void exitProgram() {
 	cout << "         | |__| | | |__| | | |__| | | |__| | | |_) |    | |    | |____           " << endl;	
 	cout << "          \\_____|  \\____/   \\____/  |_____/  |____/     |_|    |______|          " << endl;
 
-	exit(0);
+	exit(0); //forces an exit code 0 (ends without error)
 }

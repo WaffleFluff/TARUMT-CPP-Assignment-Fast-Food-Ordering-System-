@@ -1826,7 +1826,7 @@ void payment(int dine) {
 	// Step 4: Check card balance or member point and proceed with payment
 	// Check if card number exists and balance is sufficient for the total payment
 
-	if (members.topupvalue >= total || convertMemberPoint + members.topupvalue >= total) {
+	if (members.topupvalue >= subtotal || convertMemberPoint + members.topupvalue >= subtotal) {
 		//print summary of all ordered food
 		cout << "-----------------------------------------------------------" << endl;
 		cout << setfill(' ') << setw(30) << "Summary" << endl;
@@ -1866,7 +1866,7 @@ void payment(int dine) {
 				}
 			}
 		}
-		else if (members.topupvalue < total) {
+		else if (members.topupvalue < subtotal) {
 			cout << " 1. Pay with Member Point ";
 			cout << " 2. Cancel Payment ";
 			cout << "\n";

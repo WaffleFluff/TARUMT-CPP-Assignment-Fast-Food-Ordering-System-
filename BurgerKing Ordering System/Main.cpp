@@ -2005,7 +2005,7 @@ void payment(int dine) {
 	else {
 		// If balance is insufficient, provide the option to top-up or cancel the order
 		do {
-			cout << setw(29) << "Insufficient Point" << endl;
+			cout << setw(38) << "Insufficient Point" << endl;
 			cout << " 1. Top Up ";
 			cout << " 2. Cancel ";
 			cout << "\n";

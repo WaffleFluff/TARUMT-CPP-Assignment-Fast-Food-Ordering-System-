@@ -1962,9 +1962,9 @@ void payment(int dine) {
 		}
 		cout << setfill('-') << setw(60) << endl;
 		cout << "\n";
-		cout << left << setw(40) << setfill(' ') << "Total: " << setw(18) << right << total << endl;
+		cout << left << setw(40) << setfill(' ') << "Subtotal: " << setw(18) << right << total << endl;
 		cout << left << setw(16) << setfill(' ') << "Service Charge: " << setw(24) << serviceType << setw(18) << showpos << right << serviceCharge << endl;
-		cout << left << setw(40) << setfill(' ') << "Subtotal: " << setw(18) << noshowpos << right << subtotal << endl;
+		cout << left << setw(40) << setfill(' ') << "Total: " << setw(18) << noshowpos << right << subtotal << endl;
 
 		cout << "\n";
 		if (members.memberPoints <= 0) {

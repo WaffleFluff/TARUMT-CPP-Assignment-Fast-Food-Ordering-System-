@@ -911,12 +911,14 @@ void MENU() {
 				cout << "           Dine-In or Take-away" << endl;
 				cout << "     ===============================" << endl;
 
-				cout << "\nPress 1 for dine-in, 2 for take-away." << endl;
-				cout << "Enter selection: ";
+				cout << "\nPress : 0 to return to order menu" << endl;
+				cout << "        1 for dine-in" << endl;
+				cout << "        2 for take-away" << endl;
+				cout << "\nEnter selection: ";
 
 				cout << fixed << setprecision(2) ; //to ensure display for price has two decimal points (RM x.xx)
-
 				cin >> diningMethod;
+
 				if (cin.fail()) {
 					cin.clear();
 					cin.sync();
@@ -925,6 +927,11 @@ void MENU() {
 				}
 				switch (diningMethod)
 				{
+				case 0:
+				{
+					MENU();
+					break;
+				}
 				case 1:
 				case 2:
 				{
@@ -1767,7 +1774,7 @@ void DESSERT_MENU() {
 		orderList.push_back(dessert);  //add ordered items to vector
 		cout << "\nOrder has been added to checkout list ~ ~";
 	}
-}
+} 
 void SIDES_MENU() {
 	//declare input from file to stream
 	ifstream inSides;

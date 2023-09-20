@@ -979,7 +979,7 @@ void BREAKFAST_MENU() {
 			cout << breakfast.list << " " << breakfast.itemName << fixed << setprecision(2) << endl;
 		} while (inBreakfast.good());
 		inBreakfast.close();
-		cout << "\nPress 0 to return to main menu" << endl;
+		cout << "\nPress 0 to return to MENU" << endl;
 		cout << "Enter selection: ";
 
 		cin >> listChoice;
@@ -1120,7 +1120,7 @@ void CHICKEN_MENU() {
 			cout << chicken.list << " " << chicken.itemName << fixed << setprecision(2) << endl;
 		} while (inChicken.good());
 		inChicken.close();
-		cout << "Press 0 to return to main menu" << endl;
+		cout << "Press 0 to return to MENU" << endl;
 		cout << '\n';
 		cout << "Enter selection: ";
 
@@ -1285,7 +1285,7 @@ void BEEF_MENU() {
 			cout << beef.list << " " << beef.itemName << fixed << setprecision(2) << endl;
 		} while (inBeef.good());
 		inBeef.close();
-		cout << "\nPress 0 to return to main menu" << endl;
+		cout << "\nPress 0 to return to MENU" << endl;
 		cout << "Enter selection: ";
 
 
@@ -1451,7 +1451,7 @@ void PREMIUM_MENU() {
 			cout << premium.list << " " << premium.itemName << fixed << setprecision(2) << endl;
 		} while (inPremium.good());
 		inPremium.close();
-		cout << "\nPress 0 to return to main menu" << endl;
+		cout << "\nPress 0 to return to main MENU" << endl;
 		cout << "Enter selection: ";
 
 
@@ -1611,7 +1611,7 @@ void DRINKS_MENU() {
 			cout << drinks.list << " " << drinks.itemName << fixed << setprecision(2) << endl;
 		} while (inDrinks.good());
 		inDrinks.close();
-		cout << "\nPress 0 to return to main menu" << endl;
+		cout << "\nPress 0 to return to MENU" << endl;
 		cout << "Enter selection: ";
 
 		cin >> listChoice;
@@ -1706,7 +1706,7 @@ void DESSERT_MENU() {
 			cout << dessert.list << " " << dessert.itemName << fixed << setprecision(2) << endl;
 		} while (inDessert.good());
 		inDessert.close();
-		cout << "Press 0 to return to main menu" << endl;
+		cout << "Press 0 to return to MENU" << endl;
 		cout << '\n';
 		cout << "Enter selection: ";
 
@@ -1802,7 +1802,7 @@ void SIDES_MENU() {
 			cout << sides.list << " " << sides.itemName << fixed << setprecision(2) << endl;
 		} while (inSides.good());
 		inSides.close();
-		cout << "\nPress 0 to return to main menu" << endl;
+		cout << "\nPress 0 to return to MENU" << endl;
 		cout << "Enter selection: ";
 
 		cin >> listChoice;

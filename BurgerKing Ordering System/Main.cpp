@@ -814,80 +814,90 @@ void MENU() {
 			{
 				cout << i + 1 << " " << setw(maxNameWidth) << setfill(' ') << left << orderList[i].itemName << " " << setw(maxPriceWidth) << fixed << setprecision(2) << right << "Price: RM " << orderList[i].price << setw(maxQuantityWidth) << "	 Qty: " << orderList[i].quantity << endl;
 			}
-
-			cout << setw(65) << setfill('=') << endl;
-			cout << "\n";
-			cout << "\nPress : 0 to return to order menu" << endl;
-			cout << "        1 to edit orders"<<endl;
-			cout << "        2 to remove an order" << endl;
-			cout << "        3 to clear all orders" << endl;
-			cout << "        9 to proceed" << endl;
-			cout << "\nEnter selection: ";
-			cin >> checkoutChoice;
-			if (cin.fail()) { //validate input is only an integer
-				cin.clear();
-				cin.sync();
+			if (orderList.empty()) //if no orders are made, display message and return to MENU
+			{
+				cout << "No orders made." << endl;
+				cout << "\nPress Enter to return to MENU...";
 				cin.ignore();
-				checkoutChoice = 5; //set to invalid number to continue loop
-			}
-
-			if (checkoutChoice == 0) {
-				MENU();
-			}
-			else if (checkoutChoice == 1) {
-				//edit orders
-				cout << "\n";
-				cout << "     ======================" << endl;
-				cout << "           EDIT ORDER" << endl;
-				cout << "     ======================" << endl;
-				cout << "Enter the order number to edit : ";
-				cin >> editNum;
-				if (editNum >= 1 && editNum <= orderList.size()) { //check if order number is valid using vector size, checking starts from i=1
-					cout << "Enter the new quantity         : ";			//if valid, prompt user to enter new quantity
-					cin >> newQuantity;
-					orderList[editNum - 1].quantity = newQuantity;
-					orderList[editNum - 1].price = orderList[editNum - 1].price * newQuantity;
-				}
-				else {
-					cout << "\nPlease enter a Valid Selection.";
-					cout << "\n";
-					continue;
-				}
-			}
-			else if (checkoutChoice == 2) {
-				//remove an order
-				cout << "\n";
-				cout << "     ======================" << endl;
-				cout << "           REMOVE ORDER" << endl;
-				cout << "     ======================" << endl;
-				cout << "Enter the order number to remove: ";
-				cin >> editNum;
-				if (editNum >= 1 && editNum <= orderList.size()) {
-					orderList.erase(orderList.begin() + editNum - 1);
-				}
-				else {
-					cout << "\nPlease enter a Valid Selection.";
-					cout << "\n";
-					continue;
-				}
-			}
-			else if (checkoutChoice == 3) {
-				//clear all orders
-				cout << "\n";
-				cout << "     ======================" << endl;
-				cout << "           ORDER CLEAR" << endl;
-				cout << "     ======================" << endl;
-				orderList.clear();
-				continue;
-			} 
-			else if (checkoutChoice == 9) {
-				//proceed to payment
+				cin.get();
 				break;
 			}
-			else {
-				cout << "\nPlease enter a Valid Selection.";
+			else{
+				cout << setw(65) << setfill('=') << endl;
 				cout << "\n";
-				continue;
+				cout << "\nPress : 0 to return to order menu" << endl;
+				cout << "        1 to edit orders" << endl;
+				cout << "        2 to remove an order" << endl;
+				cout << "        3 to clear all orders" << endl;
+				cout << "        9 to proceed" << endl;
+				cout << "\nEnter selection: ";
+				cin >> checkoutChoice;
+
+				if (cin.fail()) { //validate input is only an integer
+					cin.clear();
+					cin.sync();
+					cin.ignore();
+					checkoutChoice = 5; //set to invalid number to continue loop
+				}
+
+				if (checkoutChoice == 0) {
+					MENU();
+				}
+				else if (checkoutChoice == 1) {
+					//edit orders
+					cout << "\n";
+					cout << "     ======================" << endl;
+					cout << "           EDIT ORDER" << endl;
+					cout << "     ======================" << endl;
+					cout << "Enter the order number to edit : ";
+					cin >> editNum;
+					if (editNum >= 1 && editNum <= orderList.size()) { //check if order number is valid using vector size, checking starts from i=1
+						cout << "Enter the new quantity         : ";			//if valid, prompt user to enter new quantity
+						cin >> newQuantity;
+						orderList[editNum - 1].quantity = newQuantity;
+						orderList[editNum - 1].price = orderList[editNum - 1].price * newQuantity;
+					}
+					else {
+						cout << "\nPlease enter a Valid Selection.";
+						cout << "\n";
+						continue;
+					}
+				}
+				else if (checkoutChoice == 2) {
+					//remove an order
+					cout << "\n";
+					cout << "     ======================" << endl;
+					cout << "           REMOVE ORDER" << endl;
+					cout << "     ======================" << endl;
+					cout << "Enter the order number to remove: ";
+					cin >> editNum;
+					if (editNum >= 1 && editNum <= orderList.size()) {
+						orderList.erase(orderList.begin() + editNum - 1);
+					}
+					else {
+						cout << "\nPlease enter a Valid Selection.";
+						cout << "\n";
+						continue;
+					}
+				}
+				else if (checkoutChoice == 3) {
+					//clear all orders
+					cout << "\n";
+					cout << "     ======================" << endl;
+					cout << "           ORDER CLEAR" << endl;
+					cout << "     ======================" << endl;
+					orderList.clear();
+					continue;
+				}
+				else if (checkoutChoice == 9) {
+					//proceed to payment
+					break;
+				}
+				else {
+					cout << "\nPlease enter a Valid Selection.";
+					cout << "\n";
+					continue;
+				}
 			}
 		} while (checkoutChoice != 9);
 

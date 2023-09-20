@@ -1990,7 +1990,7 @@ void payment(int dine) {
 				payDecicion = 5;
 			}
 			while (payDecicion != 0 && payDecicion != 2) {
-				cout << "Please Enter a Valid Number" << endl;
+				cout << "Please Enter a Valid Option" << endl;
 				cin >> payDecicion;
 				if (cin.fail()) {
 					cin.clear();
@@ -2013,7 +2013,7 @@ void payment(int dine) {
 				payDecicion = 5;
 			}
 			while (payDecicion != 1 && payDecicion != 2) {
-				cout << "Please Enter a Valid Number" << endl;
+				cout << "Please Enter a Valid Option" << endl;
 				cin >> payDecicion;
 				if (cin.fail()) {
 					cin.clear();
@@ -2037,7 +2037,7 @@ void payment(int dine) {
 				payDecicion = 5;
 			}
 			while (payDecicion != 0 && payDecicion != 1 && payDecicion != 2) {
-				cout << "Please Enter a Valid Number" << endl;
+				cout << "Please Enter a Valid Option" << endl;
 				cin >> payDecicion;
 				if (cin.fail()) {
 					cin.clear();

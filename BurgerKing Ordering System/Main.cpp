@@ -2158,7 +2158,7 @@ void payment(int dine) {
 				cin.clear();
 				cin.sync();
 				cin.ignore();
-				cout << "Invalid Selection" << endl;
+				cout << "Please Enter a Valid Option" << endl;
 				continue;
 			}
 			else if (topupDecision == 1) {
@@ -2174,7 +2174,7 @@ void payment(int dine) {
 				home();
 			}
 			else {
-				cout << "Invalid Selection" << endl;;
+				cout << "Please Enter a Valid Option" << endl;;
 			}
 		} while (topupDecision != 1 && topupDecision != 2);
 

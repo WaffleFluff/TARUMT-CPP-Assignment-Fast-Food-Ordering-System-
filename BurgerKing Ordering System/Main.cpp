@@ -269,7 +269,7 @@ void registerNewCustomer(vector<Customer>& customers)
 		}
 		else
 		{	//if the name is invalid
-			cout << "Please enter a valid name, Thank You\n";
+			cout << "Please enter a valid name, Thank You\n\n";
 			cout << flush;
 		}
 	}
